@@ -35,7 +35,7 @@ describe('app e2e', () => {
       name: 'test',
       email: 'test@gmail.com',
       password: '123',
-      roleId: 2,
+      roleId: 1,
       avatar: '',
     };
     describe('signup', () => {
@@ -96,6 +96,30 @@ describe('app e2e', () => {
           .withBody(dto)
           .expectStatus(201)
           .stores('userAt', 'access_token');
+      });
+    });
+  });
+  describe('User', () => {
+    describe('profile', () => {
+      it('should get current user', () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200);
+      });
+    });
+    describe('users', () => {
+      it('should return users(admin)', () => {
+        return pactum
+          .spec()
+          .get('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200);
       });
     });
   });
