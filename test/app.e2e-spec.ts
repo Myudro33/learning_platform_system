@@ -64,20 +64,39 @@ describe('app e2e', () => {
           .expectStatus(201);
       });
     });
-    // describe('signin',()=>{
-    //   it('should throw error if email is empty',()=>{
-    //     return pactum.spec().post('/auth/signin').withBody({password:dto.password}).expectStatus(400)
-    //   })
-    //   it('should throw error if password is empty',()=>{
-    //     return pactum.spec().post('/auth/signin').withBody({password:dto.email}).expectStatus(400)
-    //   })
-    //   it('should throw error if no body',()=>{
-    //     return pactum.spec().post('/auth/signin').expectStatus(400)
-    //   })
-    //   it('should signin',()=>{
-    //     return pactum.spec().post('/auth/signin').withBody(dto).expectStatus(201).stores('userAt','access_token')
-    //   })
-
-    // })
+    describe('signin', () => {
+      it('should throw error if email is empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({ password: dto.password })
+          .expectStatus(400);
+      });
+      it('should throw error if password is empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({ password: dto.email })
+          .expectStatus(400);
+      });
+      it('should throw error if no body', () => {
+        return pactum.spec().post('/auth/signin').expectStatus(400);
+      });
+      it('should throw error if incorect password', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({ email: 'test@gmail.com', password: 'test' })
+          .expectBodyContains(403);
+      });
+      it('should signin', () => {
+        return pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody(dto)
+          .expectStatus(201)
+          .stores('userAt', 'access_token');
+      });
+    });
   });
 });
