@@ -43,7 +43,7 @@ export class AuthService {
       if (!user) {
         throw new ForbiddenException('user not found');
       }
-      const pwMatches = await bcrypt.compare(user.password, data.password);
+      const pwMatches = await bcrypt.compare(data.password, user.password);
       if (!pwMatches) {
         throw new ForbiddenException('incorect password');
       }
@@ -55,12 +55,12 @@ export class AuthService {
   async signToken(
     userId: number,
     email: string,
-    role: number,
+    roleId: number,
   ): Promise<{ access_token: string }> {
     const payload = {
       id: userId,
       email,
-      role,
+      roleId,
     };
     const token = await this.jwt.signAsync(payload, {
       expiresIn: '1h',
