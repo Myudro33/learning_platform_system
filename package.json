@@ -35,6 +35,7 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/mapped-types": "*",
     "@prisma/client": "^6.8.2",
     "@nestjs/jwt": "^11.0.0",
     "bcrypt": "^6.0.0",
