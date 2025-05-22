@@ -24,4 +24,8 @@ export class CourseController {
   enrollCourse(@Param('id') id: string, @GetUser() user: User) {
     return this.courseService.enrollCourse(+id, user.id);
   }
+  @Get('/:id')
+  getCourseById(@Param('id') id: string) {
+    return this.courseService.getCourseById(+id);
+  }
 }

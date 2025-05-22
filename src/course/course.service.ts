@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -48,6 +48,24 @@ export class CourseService {
         },
       });
       return { data: course, message: 'Course enrolled' };
+    } catch (error) {
+      return error;
+    }
+  }
+  async getCourseById(id: number) {
+    try {
+      const course = await this.prisma.course.findUnique({
+        where: { id },
+        include: {
+          students: {
+            select: { id: true, name: true, email: true, avatar: true },
+          },
+        },
+      });
+      if (!course) {
+        return new NotFoundException('course not found');
+      }
+      return { data: course, message: 'course fetched' };
     } catch (error) {
       return error;
     }
