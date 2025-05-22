@@ -20,17 +20,19 @@ model Lecture {
   title       String
   content     String
   courseId    Int
+  course      Course @relation(fields: [courseId], references: [id])
   videoUrl    String
   attachments File[]
 }
 
 model Course {
-  id          Int     @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String?
   createdBy   Int
-  created     User    @relation("CourseCreator", fields: [createdBy], references: [id])
-  students    User[]  @relation("CourseStudents")
+  created     User      @relation("CourseCreator", fields: [createdBy], references: [id])
+  students    User[]    @relation("CourseStudents")
+  Lecture     Lecture[]
 }
 
 model User {
