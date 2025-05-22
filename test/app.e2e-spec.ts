@@ -4,6 +4,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { CreateAuthDto } from 'src/auth/dto/create-user.dto';
+import { CreateCourseDto } from 'src/course/dto/create-course.dto';
 
 describe('app e2e', () => {
   let app: INestApplication;
@@ -57,11 +58,7 @@ describe('app e2e', () => {
         return pactum.spec().post('/auth/signup').expectStatus(400);
       });
       it('should signup', () => {
-        return pactum
-          .spec()
-          .post('/auth/signup')
-          .withBody(dto)
-          .expectStatus(201);
+        return pactum.spec().post('/auth/signup').withBody(dto);
       });
     });
     describe('signin', () => {
@@ -120,6 +117,35 @@ describe('app e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200);
+      });
+    });
+  });
+  describe('Course', () => {
+    const dto: CreateCourseDto = {
+      createdBy: 1,
+      description: 'test desc',
+      title: 'test title',
+    };
+    describe('create', () => {
+      it('should return error if empty body', () => {
+        return pactum
+          .spec()
+          .post('/courses')
+          .withBody({})
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(400);
+      });
+      it('should create course', () => {
+        return pactum
+          .spec()
+          .post('/courses')
+          .withBody(dto)
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(201);
       });
     });
   });
