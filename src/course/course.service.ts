@@ -14,4 +14,12 @@ export class CourseService {
       return error;
     }
   }
+  async getCourses() {
+    try {
+      const courses = await this.prisma.course.findMany();
+      return { data: courses, message: 'courses fetched' };
+    } catch (error) {
+      return error;
+    }
+  }
 }

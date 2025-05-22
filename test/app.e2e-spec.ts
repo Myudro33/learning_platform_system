@@ -148,5 +148,10 @@ describe('app e2e', () => {
           .expectStatus(201);
       });
     });
+    describe('get', () => {
+      it('should get courses', () => {
+        return pactum.spec().get('/courses').expectStatus(200);
+      });
+    });
   });
 });
