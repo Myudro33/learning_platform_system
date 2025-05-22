@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Assignment {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  courseId    Int
+  course      Course  @relation(fields: [courseId], references: [id])
+  dueDate     String
+}
+
 model File {
   id         Int       @id @default(autoincrement())
   filename   String
@@ -33,6 +42,8 @@ model Course {
   created     User      @relation("CourseCreator", fields: [createdBy], references: [id])
   students    User[]    @relation("CourseStudents")
   Lecture     Lecture[]
+
+  Assignment Assignment[]
 }
 
 model User {
