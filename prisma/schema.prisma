@@ -7,6 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model File {
+  id         Int       @id @default(autoincrement())
+  filename   String
+  url        String
+  uploadedBy Int
+  Lecture    Lecture[]
+}
+
+model Lecture {
+  id          Int    @id @default(autoincrement())
+  title       String
+  content     String
+  courseId    Int
+  videoUrl    String
+  attachments File[]
+}
+
 model Course {
   id          Int     @id @default(autoincrement())
   title       String
