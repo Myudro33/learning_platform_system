@@ -1,8 +1,11 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { AdminGuard, JwtGuard } from '../auth/guard';
 import { InstructorGuard } from '../auth/guard/instructor.guard';
+import { GetUser } from '../auth/decorator';
+import { User } from '@prisma/client';
+import { StudentGuard } from '../auth/guard/student.guard';
 
 @Controller('courses')
 export class CourseController {
@@ -15,5 +18,10 @@ export class CourseController {
   @Get()
   getCourses() {
     return this.courseService.getCourses();
+  }
+  @UseGuards(JwtGuard, StudentGuard)
+  @Post('/:id/enroll')
+  enrollCourse(@Param('id') id: string, @GetUser() user: User) {
+    return this.courseService.enrollCourse(+id, user.id);
   }
 }

@@ -16,8 +16,38 @@ export class CourseService {
   }
   async getCourses() {
     try {
-      const courses = await this.prisma.course.findMany();
+      const courses = await this.prisma.course.findMany({
+        include: {
+          students: {
+            select: { id: true, name: true, email: true, avatar: true },
+          },
+        },
+      });
       return { data: courses, message: 'courses fetched' };
+    } catch (error) {
+      return error;
+    }
+  }
+  async enrollCourse(courseId: number, userId: number) {
+    try {
+      const course = await this.prisma.course.update({
+        where: { id: courseId },
+        data: {
+          students: {
+            connect: { id: userId },
+          },
+        },
+        select: {
+          students: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      });
+      return { data: course, message: 'Course enrolled' };
     } catch (error) {
       return error;
     }
