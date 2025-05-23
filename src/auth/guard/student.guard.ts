@@ -13,7 +13,7 @@ export class StudentGuard implements CanActivate {
     if (!user) {
       return false;
     }
-    if (user.roleId === 3) {
+    if (user.roleId === 3 || user.roleId === 1) {
       return true;
     } else {
       throw new ForbiddenException('only student can access this resource');

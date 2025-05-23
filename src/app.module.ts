@@ -6,9 +6,18 @@ import { UserModule } from './user/user.module';
 import { CourseModule } from './course/course.module';
 import { LectureModule } from './lecture/lecture.module';
 import { AssignmentModule } from './assignment/assignment.module';
+import { MailModule } from './mailer/mailer.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, UserModule, CourseModule, LectureModule, AssignmentModule],
+  imports: [
+    AuthModule,
+    PrismaModule,
+    UserModule,
+    CourseModule,
+    LectureModule,
+    AssignmentModule,
+    MailModule,
+  ],
   providers: [UserService],
 })
 export class AppModule {}
