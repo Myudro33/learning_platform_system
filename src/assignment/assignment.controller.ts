@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { AssignmentService } from './assignment.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
-import { JwtGuard } from 'src/auth/guard';
-import { InstructorGuard } from 'src/auth/guard/instructor.guard';
+import { JwtGuard } from '../auth/guard';
+import { InstructorGuard } from '../auth/guard/instructor.guard';
+import { StudentGuard } from 'src/auth/guard/student.guard';
 
 @Controller('')
 export class AssignmentController {
@@ -24,10 +25,12 @@ export class AssignmentController {
   getAssignments(@Param('id') id: string) {
     return this.assignmentService.getAssignments(+id);
   }
+  @UseGuards(JwtGuard, StudentGuard)
   @Put('/assignments/:id/submit')
   submit(@Param('id') id: string) {
     return this.assignmentService.submit(+id);
   }
+  @UseGuards(JwtGuard, InstructorGuard)
   @Get('/assignments/:id/submissions')
   getSubmitedSubmissions(@Param('id') id: string) {
     return this.assignmentService.getSubmitedSubmissions(+id);
