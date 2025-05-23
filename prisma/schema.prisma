@@ -14,6 +14,7 @@ model Assignment {
   courseId    Int
   course      Course  @relation(fields: [courseId], references: [id])
   dueDate     String
+  done        Boolean
 }
 
 model File {

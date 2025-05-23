@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AssignmentService } from './assignment.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { JwtGuard } from 'src/auth/guard';
@@ -15,5 +23,13 @@ export class AssignmentController {
   @Get('/courses/:id/assignments')
   getAssignments(@Param('id') id: string) {
     return this.assignmentService.getAssignments(+id);
+  }
+  @Put('/assignments/:id/submit')
+  submit(@Param('id') id: string) {
+    return this.assignmentService.submit(+id);
+  }
+  @Get('/assignments/:id/submissions')
+  getSubmitedSubmissions(@Param('id') id: string) {
+    return this.assignmentService.getSubmitedSubmissions(+id);
   }
 }

@@ -9,16 +9,13 @@ export class AssignmentService {
     try {
       const assignment = await this.prisma.assignment.create({
         data: {
-          dueDate: dto.dueDate,
+          ...dto,
           courseId: id,
-          title: dto.title,
-          description: dto.description,
+          done: false,
         },
       });
       return { assignment, message: 'assignment created' };
     } catch (error) {
-      console.log('test');
-
       throw new InternalServerErrorException(
         error instanceof Error ? error.message : JSON.stringify(error),
       );
@@ -48,5 +45,24 @@ export class AssignmentService {
         error instanceof Error ? error.message : JSON.stringify(error),
       );
     }
+  }
+  async submit(id: number) {
+    try {
+      const assignment = await this.prisma.assignment.update({
+        where: { id },
+        data: { done: true },
+      });
+      return { data: assignment, message: 'assignment done!' };
+    } catch (error) {
+      return error;
+    }
+  }
+  async getSubmitedSubmissions(id: number) {
+    try {
+      const assignments = await this.prisma.assignment.findMany({
+        where: { courseId: id, done: true },
+      });
+      return { data: assignments, message: 'assignments fetched' };
+    } catch (error) {}
   }
 }
