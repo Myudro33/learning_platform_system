@@ -13,6 +13,7 @@ export class UserController {
   getUsers() {
     return this.userService.getUsers();
   }
+  @UseGuards(JwtGuard)
   @Get('me')
   profile(@GetUser() user: User) {
     return { data: user };
