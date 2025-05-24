@@ -18,11 +18,12 @@ model Assignment {
 }
 
 model File {
-  id         Int       @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   filename   String
   url        String
   uploadedBy Int
-  Lecture    Lecture[]
+  lectureId  Int
+  lecture    Lecture @relation(fields: [lectureId], references: [id])
 }
 
 model Lecture {
