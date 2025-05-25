@@ -27,6 +27,7 @@ export class FileService {
             ...data,
             lectureId: parseInt(data.lectureId),
             uploadedBy: user.id,
+            filename: f.filename,
             url: fileUrl,
           },
         });
