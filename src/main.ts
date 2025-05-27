@@ -13,6 +13,13 @@ async function bootstrap() {
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
     prefix: '/uploads/',
   });
+  const corsOrigins = process.env.CORS_ORIGINS?.split(',').map((origin) =>
+    origin.trim(),
+  );
+  app.enableCors({
+    origin: corsOrigins,
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle('learning management api')
     .setVersion('1.0')
