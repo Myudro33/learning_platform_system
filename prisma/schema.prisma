@@ -7,6 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// id
+// assignmentId
+// studentId
+// file
+// submittedAt
+// grade
+
+model Submission{
+  id Int @id @default(autoincrement())
+  assignmentId Int
+  studentId Int
+  file String
+  submittedAt DateTime
+  gradet String
+  assignment Assignment @relation(fields: [assignmentId],references: [id])
+  student User @relation(fields: [studentId],references: [id])
+}
+
 model Assignment {
   id          Int     @id @default(autoincrement())
   title       String
@@ -15,6 +33,8 @@ model Assignment {
   course      Course  @relation(fields: [courseId], references: [id])
   dueDate     String
   done        Boolean
+
+  Submission Submission[]
 }
 
 model File {
@@ -60,6 +80,7 @@ model User {
   courseId      Course[] @relation("CourseStudents")
 
   @@map("users")
+  Submission Submission[]
 }
 
 model Role {
