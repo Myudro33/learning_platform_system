@@ -10,7 +10,13 @@ import { AuthService } from './auth.service';
 import { SingInDto } from './dto/signin-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadService } from 'src/file-upload/file-upload.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -19,6 +25,22 @@ export class AuthController {
   @Post('signup')
   @ApiOperation({ summary: 'register user' })
   @ApiResponse({ status: 201, description: 'user created ' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', default: 'john' },
+        email: { type: 'string', default: 'john@gmail.com' },
+        password: { type: 'string', default: 'john123' },
+        roleId: { type: 'string', default: '3' },
+        avatar: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseInterceptors(
     FileInterceptor(
       'avatar',
