@@ -2,9 +2,8 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { MailerService } from '../mailer/mailer.service';
-import { SubmissionService } from 'src/submission/submission.service';
 import { User } from '@prisma/client';
-import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { SubmissionService } from 'src/submission/submission.service';
 
 @Injectable()
 export class AssignmentService {
@@ -12,7 +11,6 @@ export class AssignmentService {
     private prisma: PrismaService,
     private emailService: MailerService,
     private submissionService: SubmissionService,
-    private uploadService: FileUploadService,
   ) {}
   async createAssignment(id: number, dto: CreateAssignmentDto) {
     try {
@@ -77,7 +75,7 @@ export class AssignmentService {
       } else {
         return { message: 'author not found' };
       }
-      return this.CreateSubmissionDto(id, file, user);
+      return this.submissionService.CreateSubmissionDto(id, file, user);
     } catch (error) {
       return error;
     }
@@ -89,23 +87,5 @@ export class AssignmentService {
       });
       return { data: assignments, message: 'assignments fetched' };
     } catch (error) {}
-  }
-
-  async CreateSubmissionDto(id: number, file: Express.Multer.File, user: User) {
-    if (file) {
-      const fileUrl = this.uploadService.getPublicUrl(file.filename, 'files');
-      const submission = await this.prisma.submission.create({
-        data: {
-          file: fileUrl,
-          assignmentId: id,
-          studentId: user.id,
-          submittedAt: new Date(),
-          grade: null,
-        },
-      });
-      return { data: submission, message: 'submission created' };
-    } else {
-      throw new InternalServerErrorException('file is required');
-    }
   }
 }
