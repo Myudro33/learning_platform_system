@@ -9,6 +9,7 @@ import { AssignmentModule } from './assignment/assignment.module';
 import { MailModule } from './mailer/mailer.module';
 import { UploadModule } from './file-upload/file-upload.module';
 import { FileModule } from './file/file.module';
+import { SubmissionModule } from './submission/submission.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FileModule } from './file/file.module';
     MailModule,
     UploadModule,
     FileModule,
+    SubmissionModule,
   ],
   providers: [UserService],
 })

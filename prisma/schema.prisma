@@ -7,22 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// id
-// assignmentId
-// studentId
-// file
-// submittedAt
-// grade
-
-model Submission{
-  id Int @id @default(autoincrement())
+model Submission {
+  id           Int        @id @default(autoincrement())
   assignmentId Int
-  studentId Int
-  file String
-  submittedAt DateTime
-  gradet String
-  assignment Assignment @relation(fields: [assignmentId],references: [id])
-  student User @relation(fields: [studentId],references: [id])
+  studentId    Int
+  file         String
+  submittedAt  DateTime
+  grade        String?
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  student      User       @relation(fields: [studentId], references: [id])
 }
 
 model Assignment {
@@ -69,18 +62,18 @@ model Course {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String
-  email         String   @unique()
+  email         String       @unique()
   password      String
   roleId        Int
-  role          Role     @relation(fields: [roleId], references: [id])
+  role          Role         @relation(fields: [roleId], references: [id])
   avatar        String?
-  courseCreator Course[] @relation("CourseCreator")
-  courseId      Course[] @relation("CourseStudents")
+  courseCreator Course[]     @relation("CourseCreator")
+  courseId      Course[]     @relation("CourseStudents")
+  Submission    Submission[]
 
   @@map("users")
-  Submission Submission[]
 }
 
 model Role {
