@@ -17,6 +17,8 @@ import { InstructorGuard } from '../auth/guard/instructor.guard';
 import { StudentGuard } from '../auth/guard/student.guard';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -48,6 +50,18 @@ export class AssignmentController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'submit assignment' })
   @ApiResponse({ status: 201, description: 'assignment submitted' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        avatar: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @Put('/assignments/:id/submit')
   @UseInterceptors(
     FileInterceptor('files', new FileUploadService().getMulterOptions('files')),
